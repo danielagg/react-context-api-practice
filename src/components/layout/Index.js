@@ -1,7 +1,12 @@
 import React from "react";
+import TrackWrapper from "../tracks/TrackWrapper";
 
 const Index = () => {
-  return <div />;
+  return (
+    <>
+      <TrackWrapper />
+    </>
+  );
 };
 
 export default Index;

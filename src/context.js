@@ -3,10 +3,12 @@ import Axios from "axios";
 
 const Context = React.createContext();
 
+export const Consumer = Context.Consumer;
+
 export class Provider extends Component {
   state = {
     track_list: [],
-    heading: "Top 10 tracks"
+    heading: "Top 10 tracks in Hungary"
   };
 
   componentDidMount() {
@@ -27,5 +29,3 @@ export class Provider extends Component {
     );
   }
 }
-
-export const Consumer = Context.Consumer;

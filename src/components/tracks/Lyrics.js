@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
+import { Consumer } from "../../context";
 import LoadingSpinner from "../layout/LoadingSpinner";
 
 const Lyrics = props => {
@@ -22,19 +23,61 @@ const Lyrics = props => {
     return <LoadingSpinner />;
   } else {
     return (
-      <>
-        <Link to="/" className="btn btn-dark btn-sm mb-4">
-          Go back
-        </Link>
-        <div className="card">
-          <h5 className="card-header">
-            TrackName by <span className="text-secondary">Artist</span>
-          </h5>
-          <div className="card-body">
-            <p className="card-text">{lyrics.lyrics_body}</p>
-          </div>
-        </div>
-      </>
+      <Consumer>
+        {value => {
+          const { track_list } = value;
+
+          // get single, currently displayed track from context
+          const currentTrack = track_list
+            .map(item => item.track)
+            .filter(
+              track =>
+                parseInt(track.track_id) ===
+                parseInt(props.match.params.track_id)
+            )[0];
+
+          console.log(currentTrack);
+
+          if (currentTrack === undefined) {
+            throw new Error("Cannot find selected track");
+          }
+
+          if (track_list === undefined || track_list.length === 0) {
+            return (
+              <>
+                <Link to="/" className="btn btn-dark btn-sm mb-4">
+                  Go back
+                </Link>
+                <LoadingSpinner />
+              </>
+            );
+          } else {
+            return (
+              <>
+                <Link to="/" className="btn btn-dark btn-sm mb-4">
+                  Go back
+                </Link>
+                <div className="card">
+                  <h5 className="card-header">
+                    {currentTrack.track_name} by{" "}
+                    <span className="text-secondary">
+                      {currentTrack.artist_name}
+                    </span>
+                  </h5>
+                  <div className="card-body">
+                    <p className="card-text">{lyrics.lyrics_body}</p>
+                  </div>
+                  {/* {
+                    <div className="row">
+                      <h1>{currentTrack.track_id}</h1>
+                    </div>
+                  } */}
+                </div>
+              </>
+            );
+          }
+        }}
+      </Consumer>
     );
   }
 };

@@ -5,10 +5,25 @@ const Context = React.createContext();
 
 export const Consumer = Context.Consumer;
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SEARCH_TRACKS":
+      return {
+        ...state,
+        track_list: action.payload,
+        heading: "Search Results"
+      };
+
+    default:
+      return state;
+  }
+};
+
 export class Provider extends Component {
   state = {
     track_list: [],
-    heading: "Top 10 tracks in Hungary"
+    heading: "Top 10 tracks in Hungary",
+    dispatch: action => this.setState(state => reducer(state, action))
   };
 
   componentDidMount() {
@@ -23,7 +38,7 @@ export class Provider extends Component {
 
   render() {
     return (
-      <Context.Provider value={this.state.track_list}>
+      <Context.Provider value={this.state}>
         {this.props.children}
       </Context.Provider>
     );

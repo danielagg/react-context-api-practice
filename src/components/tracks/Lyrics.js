@@ -36,8 +36,6 @@ const Lyrics = props => {
                 parseInt(props.match.params.track_id)
             )[0];
 
-          console.log(currentTrack);
-
           if (currentTrack === undefined) {
             throw new Error("Cannot find selected track");
           }
@@ -67,12 +65,23 @@ const Lyrics = props => {
                   <div className="card-body">
                     <p className="card-text">{lyrics.lyrics_body}</p>
                   </div>
-                  {/* {
-                    <div className="row">
-                      <h1>{currentTrack.track_id}</h1>
-                    </div>
-                  } */}
                 </div>
+                <ul className="list-group mt-3">
+                  <li className="list-group-item">
+                    <strong>Track rating</strong>: {currentTrack.track_rating}
+                  </li>
+                  <li className="list-group-item">
+                    <strong>Number of favorits</strong>:{" "}
+                    {currentTrack.num_favourite}
+                  </li>
+                  <li className="list-group-item">
+                    {parseInt(currentTrack.explicit) === 1 ? (
+                      <strong>This is an explicit track.</strong>
+                    ) : (
+                      <p>This track is not explicit.</p>
+                    )}
+                  </li>
+                </ul>
               </>
             );
           }
